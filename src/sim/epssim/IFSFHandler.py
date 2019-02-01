@@ -3,6 +3,8 @@ Created on 01-Feb-2019
 
 @author: VivekK4
 '''
+from xml.sax.xmlreader import XMLReader
+from xml.etree.ElementTree import ElementTree
 
 class IFSFHandler:
     '''
@@ -17,6 +19,4 @@ class IFSFHandler:
         self.host = ip;
         self.port = port
         
-    def processRequestString(self, req):
-        
-        
+                
