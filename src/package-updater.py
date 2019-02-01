@@ -1,6 +1,9 @@
 import os.path as path
 import glob
 import os
+
+from color_output import ColorOutput as co
+
 class PackageUpdater :
     
     def __init__( self ):
@@ -12,8 +15,10 @@ class PackageUpdater :
         self.fileOnlyList = []
         self.fileListDest = []
         self.fileListSrc = []
+        
         self.commonFilesIndex = []
-    
+        self.newerFileIndex = []
+        
     def findAllFiles( self , strPath ):    
         
         fileList = glob.glob( strPath )
@@ -74,17 +79,32 @@ class PackageUpdater :
         
         indexDest = 0
         indexSrc = 0
-        
+        numMatches = 0
         for file1 in fileListDest :
-            indexSrc = 0 
+            indexSrc = 0
+            numMatches = 0
+            
+            matchMap = []
+            
             for file2 in fileListSrc :
                 
                 if ( self.compareNames( file1, file2 ) == True ):
-                    print ( "Files are equal " + self.fileListDest[ indexDest ][63:] + " = "  +  self.fileListSrc[ indexSrc ][63:] )
+                    numMatches += 1
+                    
+                    # print ( "Files are equal " + self.fileListDest[ indexDest ][63:] + " <=> "  +  self.fileListSrc[ indexSrc ][63:] )
                     # print ( "Files are equal " + file1 + " = "  +  file2 )
-                    self.commonFilesIndex.append( { indexDest : indexSrc } )
+                    
+                    matchMap.append( { indexDest : indexSrc } )
+                    
                 indexSrc += 1
-                
+            ####################################
+            # TODO: remove redundant matches
+            ####################################
+            if ( numMatches > 0 ) :
+                # print ("----------------------------------------------------")
+                pass
+            
+            self.commonFilesIndex =  self.commonFilesIndex + matchMap 
             indexDest += 1
     def compareNames( self , file1 , file2 ):
         if ( file1 == file2 ):
@@ -113,7 +133,9 @@ class PackageUpdater :
         self.genDestFileList()
         self.genSrcFileList()
         self.genCommonFiles()
-        print ( self.commonFilesIndex )
+        # print ( self.commonFilesIndex )
+        self.findNewerFiles()
+        print ( self.newerFileIndex )
         
     def printContext( self ) :
         print self.fileList
@@ -129,19 +151,43 @@ class PackageUpdater :
             or basename == "Certif.crt" 
             or basename == "SponsorCertif.crt") :
             
-            print "Not required " + fileName
+            # print "Not required " + fileName
             return False
-        elif ( extension == 'png' 
-            or extension == 'jpg' 
-            or extension == 'jpeg' 
-            or extension == 'wav' 
-            or extension == 'ttf' 
-            or extension == 'frm' ) :
+        # elif ( extension == 'png' 
+            # or extension == 'jpg' 
+            # or extension == 'jpeg' 
+            # or extension == 'wav' 
+            # or extension == 'ttf' 
+            # or extension == 'frm'
+            # or extension == 'tbl'
+            # or extension == 'eet' ) :
             
-            print "not required " + fileName
-            return False
+            # # print "not required " + fileName
+            # return False
         else :
             return True
     
+    
+    def findNewerFiles( self ) :
+        for entry in self.commonFilesIndex :
+            for destIndex, srcIndex in entry.items() :
+                
+                destFile = self.fileListDest[ destIndex ]
+                srcFile = self.fileListSrc[ srcIndex ]
+                
+                destMTime =   path.getmtime( destFile )
+                srcMTime =   path.getmtime( srcFile )
+                
+                if ( destMTime > srcMTime ) :
+                    self.newerFileIndex.append( entry )
+                
+        for entry in self.newerFileIndex :
+            for destIndex, srcIndex in  entry.items() :
+                print co.getReset() + "REPLACE " + co.getColorString( co.COLOR_RED ) + self.fileListDest[ destIndex ][63:] \
+                + co.getReset()+co.getColorString( co.COLOR_GREEN ) +  " WITH " \
+                + co.getReset()+co.getColorString( co.COLOR_RED )  + self.fileListSrc[ srcIndex ][63:]  \
+                + co.getReset()
+                
+                
 p = PackageUpdater()
 p.process()
