@@ -6,7 +6,7 @@ Created on 01-Feb-2019
 
 from src.sim.epssim.IFSFRequest import IFSFRequest
 from src.sim.epssim.POPCommunicator import POPCommunicator
-
+import src.sim.providers.FileDataProvider as FDP
 class EMVSimulator:
     '''
     a class to automate EMV Process class can do following thing 
@@ -18,9 +18,9 @@ class EMVSimulator:
     SETICCCONFIG = 'SetICCConfig'
     UPDATEAID = 'UpdateAID'
     UPDATEKEYS = 'UpdateKeys'
-    UPDATEAIDRUEES = 'UpdateAIDRules'
+    UPDATEAIDRULES = 'UpdateAIDRules'
 
-    def __init__(self):
+    def __init__(self, emvCommandProvider = None):
         '''
         Constructor
         '''
@@ -32,6 +32,13 @@ class EMVSimulator:
         self.ReadCardXML = None
         self.pop = None
         
+        if emvCommandProvider is not None:
+            self.emvCommandProvider = emvCommandProvider
+        else:
+            datapro = FDP.FileDataProvider(FDP.FileDataProvider.CONFIG_EMV)
+            datapro.initConfig()
+            self.emvCommandProvider = datapro
+            
         self.validaton = [
             self.setIccConfigXML,
             self.UpdateAIDXML,
@@ -50,6 +57,7 @@ class EMVSimulator:
         
         pop = self.pop
         
+        #TODO: initialize emv and set emv init flag to true
         seticcRes = pop.sendRequest(self.setIccConfigXML)
         
         
@@ -59,30 +67,38 @@ class EMVSimulator:
         '''
         self.pop = POPCommunicator(ip, port)
     
-    def reloadCommandsFromXML(self):
-        print("reading commands from xml")
-    
-    def setSetCommand(self,commandname, commandData):
+    def reloadCommandsFromProvider(self):
+        print('Reloading commands')
+        seticc = self.emvCommandProvider.provideIFSFCommand(EMVSimulator.SETICCCONFIG)
+        self.setEMVCommand(EMVSimulator.SETICCCONFIG, seticc)
+        
+        updateaid = self.emvCommandProvider.provideIFSFCommand(EMVSimulator.UPDATEAID)
+        self.setEMVCommand(EMVSimulator.UPDATEAID, updateaid)
+        
+        updatekeys =  self.emvCommandProvider.provideIFSFCommand(EMVSimulator.UPDATEKEYS)
+        self.setEMVCommand(EMVSimulator.UPDATEKEYS, updatekeys)
+        
+        updateaidrules =  self.emvCommandProvider.provideIFSFCommand(EMVSimulator.UPDATEAIDRULES)
+        self.setEMVCommand(EMVSimulator.UPDATEAIDRULES, updateaidrules)
+        
+        
+    def setEMVCommand(self,commandname, commandData):
         '''
         set predefined commands for EMV init and transactions
         '''
-        try :
-            request = IFSFRequest(commandData)
-            if commandname == EMVSimulator.UPDATEAID:
-                self.UpdateAIDXML = request
-            elif commandname == EMVSimulator.SETICCCONFIG:
-                self.setIccConfigXML = request
-            elif commandname == EMVSimulator.UPDATEAIDRUEES:
-                self.UpdateAIDRulesXML = request
-            elif commandname == EMVSimulator.UPDATEKEYS:
-                self.UpdateKeysXML = request
-            else :
-                print ('Invalid Command name provided')
-            
-        except Exception, e:
-            print('Exception while parsing XML',e)
-            return False
-        
+    
+        request = IFSFRequest(commandData)
+        if commandname == EMVSimulator.UPDATEAID:
+            self.UpdateAIDXML = request
+        elif commandname == EMVSimulator.SETICCCONFIG:
+            self.setIccConfigXML = request
+        elif commandname == EMVSimulator.UPDATEAIDRULES:
+            self.UpdateAIDRulesXML = request
+        elif commandname == EMVSimulator.UPDATEKEYS:
+            self.UpdateKeysXML = request
+        else :
+            print ('Invalid Command name provided')
+         
         return True
     
     def validateAllReqData(self):

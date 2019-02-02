@@ -7,6 +7,8 @@ Created on 02-Feb-2019
 from src.utils.InputUtils import readmultiline
 from src.sim.epssim.IFSFRequest import IFSFRequest
 from src.sim.epssim.IFSFRequestEditor import IFSFRequestEditor
+import src.sim.epssim.EMVSimulator as ES
+import os
 def inputTest():
     print('Enter XML now')
     xmlData = readmultiline()
@@ -24,10 +26,12 @@ def editorTest():
     editor = IFSFRequestEditor(req)
     editor.editInNpp()
     editor.printXML()
-    a="""
-    asdsad
-    asdsad
-    asdsa"""
-    print(a)
 
-editorTest()
+def simTest():
+    print('Testing simulator')
+    sim = ES.EMVSimulator()
+    sim.reloadCommandsFromProvider()
+    
+os.chdir('../../')
+simTest()
+    

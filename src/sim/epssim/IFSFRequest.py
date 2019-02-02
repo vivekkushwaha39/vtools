@@ -4,6 +4,7 @@ Created on 01-Feb-2019
 @author: vivek_
 '''
 import xml.etree.ElementTree as ET
+import re
 class IFSFRequest:
     '''
     A class to store IFSF requests and responses
@@ -119,3 +120,7 @@ class IFSFRequest:
             root = self.requestXML
             
         return root.findall(self.namespace+ tagname)
+    
+    @staticmethod
+    def prettyPrint(stringdata):
+        return re.sub('>\s*<', ">\n<" ,stringdata)

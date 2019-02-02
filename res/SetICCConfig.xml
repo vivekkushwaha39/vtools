@@ -1,0 +1,76 @@
+<DeviceRequest RequestType="Input" WorkstationID="POS001" POPID="001" RequestID="00005278" xmlns="http://www.nrf-arts.org/IXRetail/namespace" xmlns:ns2="urn:vfi-viper:eps.2004-03-12">
+    <Output OutDeviceTarget="PinPad">
+        <TextLine> </TextLine>
+    </Output>
+    <Input InDeviceTarget="PinPad">
+        <Command MinLength="0" MaxLength="0" Echo="true" TimeOut="75">SetICCConfiguration</Command>
+        <InSecureData Mode="Contactless">
+            <ICCData>
+                <ICCParameter>EnableICC</ICCParameter>
+                <ICCParameterValue>74727565</ICCParameterValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F35</SecureTag>
+                <SecureValue>3235</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F40</SecureTag>
+                <SecureValue>36303030463031303031</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>5F2A</SecureTag>
+                <SecureValue>383430</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F1A</SecureTag>
+                <SecureValue>383430</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F15</SecureTag>
+                <SecureValue>35353431</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F53</SecureTag>
+                <SecureValue>52</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>5F36</SecureTag>
+                <SecureValue>32</SecureValue>
+            </ICCData>
+        </InSecureData>
+        <InSecureData Mode="Contact">
+            <ICCData>
+                <ICCParameter>EnableICC</ICCParameter>
+                <ICCParameterValue>74727565</ICCParameterValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F35</SecureTag>
+                <SecureValue>3235</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F40</SecureTag>
+                <SecureValue>36303030463031303031</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>5F2A</SecureTag>
+                <SecureValue>383430</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F1A</SecureTag>
+                <SecureValue>383430</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F15</SecureTag>
+                <SecureValue>35353431</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>9F53</SecureTag>
+                <SecureValue>52</SecureValue>
+            </ICCData>
+            <ICCData>
+                <SecureTag>5F36</SecureTag>
+                <SecureValue>32</SecureValue>
+            </ICCData>
+        </InSecureData>
+    </Input>
+</DeviceRequest>

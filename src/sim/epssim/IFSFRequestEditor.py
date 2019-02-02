@@ -4,6 +4,7 @@ Created on 02-Feb-2019
 @author: vivek_
 '''
 import xml.etree.ElementTree as ET
+from src.sim.epssim.IFSFRequest import IFSFRequest
 
 class IFSFRequestEditor:
     '''
@@ -21,15 +22,19 @@ class IFSFRequestEditor:
     
     def editInNpp(self):
         deviceInput = self.request.findATagByName(None, 'Input')
+        
         insecDatas = self.request.findAllTagByName(deviceInput, 'InSecureData')
         
-        for params in insecDatas:
-            _, val, _ = self.request.getKeyVal(params)
+        iccDatas = self.request.findAllTagByName(insecDatas[0], 'ICCData')
         
-        if val is not None:
-            byte = bytearray.fromhex(val.text)
-            val.text = byte
+        for params in iccDatas:
+            _, val, _ = self.request.getKeyVal(params)
             
+            if val is not None:
+                byte = bytearray.fromhex(val.text)
+                val.text = str(byte)
+        
     def printXML(self):
         xmlString = self.request.genXMLString()
+        xmlString = IFSFRequest.prettyPrint(xmlString)
         print xmlString
