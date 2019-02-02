@@ -4,12 +4,9 @@ Created on 01-Feb-2019
 @author: vivek_
 '''
 import xml.etree.ElementTree as ET
-from __builtin__ import Exception, None
-from decimal import val
-
 class IFSFRequest:
     '''
-    classdocs
+    A class to store IFSF requests and responses
     '''
 
 
@@ -21,7 +18,8 @@ class IFSFRequest:
         self.requestXML = None
         self.currIccData = None
         self.currInSecureData = None
-        self.parse()
+        self.namespace = '{http://www.nrf-arts.org/IXRetail/namespace}'
+        ET.register_namespace('', 'http://www.nrf-arts.org/IXRetail/namespace')
         
     def parse(self):
         self.requestXML = ET.fromstring(self.requestStr)
@@ -35,8 +33,8 @@ class IFSFRequest:
             return None
         
         for params in self.currInSecureData:
-            key, val = self.getKeyVal(params)
-            if key == tagName:
+            key, val, _ = self.getKeyVal(params)
+            if key.text == tagName:
                 returnVal = val
                 break
         
@@ -50,10 +48,10 @@ class IFSFRequest:
         currVal = None
         
         for child in rootIccData:
-            if child.tag == 'ICCParameter' or child.tag == 'SecureTag' :
-                currKey = child.text 
+            if child.tag == (self.namespace + 'ICCParameter') or ( child.tag == self.namespace + 'SecureTag' ) :
+                currKey = child 
             else:
-                currVal = child.text
+                currVal = child
     
         return (currKey, currVal, child)
     
@@ -71,7 +69,7 @@ class IFSFRequest:
             for params in insecDatas:
                 
                 key, val = self.getKeyVal(params)            
-                if tag == key and value == val:
+                if tag == key.text and value == val.text:
                     found = True
                     break
             
@@ -86,38 +84,38 @@ class IFSFRequest:
     
     def selectInsecureDataByIndex(self, index):
         try:
-            inputTag = self.find('Input')
-                        
+            inputTag = self.findATagByName(self.requestXML, 'Input')
+            print inputTag
             if inputTag is None:
                 raise Exception('No input found')
             
-            insecDatas = inputTag.findall('InSecureData')
+            
+            insecDatas = self.findAllTagByName(inputTag, 'InSecureData')
             if len(insecDatas) < (index+1):
                 raise Exception('Insec data index not found ', index)
             self.currInSecureData = insecDatas[index]
-            
-        except:
-            print('error')
+             
+        except Exception, e :
+            print('error' , e )
             return None
             
         return True
-            
+
+    
+    def genXMLString(self):
+        xmlString = ET.tostring(self.requestXML, 'utf-8', 'xml').decode()
+        return xmlString
     def getResults(self):
         print("TODO: need to send results")
     
     def findATagByName(self, root, tagname):
-        node = None
-        for child in root:
-            if tagname == child.tag:
-                node = child
-                break
-        return node
+        if root is None:
+            root = self.requestXML
+        
+        return root.find(self.namespace + tagname )
     
     def findAllTagByName(self, root, tagname):
-        nodes = []
-        
-        for child in root:
-            if tagname == child.tag:
-                nodes.append( child )
-        
-        return nodes
+        if root is None:
+            root = self.requestXML
+            
+        return root.findall(self.namespace+ tagname)
