@@ -8,6 +8,7 @@ from vtools.src.sim.epssim.IFSFRequest import IFSFRequest
 from vtools.src.sim.epssim.IFSFRequestEditor import IFSFRequestEditor
 import vtools.src.sim.epssim.EMVSimulator as ES
 import os
+from vtools.src.sim.ui.EPSUILeg import runUI
 def inputTest():
     print('Enter XML now')
     xmlData = readmultiline()
@@ -41,7 +42,12 @@ def editorTest2():
     editor = IFSFRequestEditor(req)
     editor.editForAID('A00000023232')
 
-    
+def legTets():
+#     com = CommandParserLeg.CmdParserLeg()
+    runUI()
+
+os.system('pwd')
 os.chdir('../../')
-editorTest2()
+os.system('pwd')
+legTets()
     

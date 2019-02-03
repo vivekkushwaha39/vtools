@@ -42,5 +42,5 @@ def editorTest2():
     editor.editForAID('A00000023232')
 
     
-os.chdir('../../')
+os.chdir('../')
 editorTest2()

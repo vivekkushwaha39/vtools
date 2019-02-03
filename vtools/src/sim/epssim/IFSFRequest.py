@@ -29,7 +29,10 @@ class IFSFRequest:
             self.requestStr = newRequestString
         
         self.requestXML = ET.fromstring(self.requestStr)
-
+        
+    def setCommand(self, parsedCommand):
+        self.requestXML=parsedCommand
+    
     # get values from currently selected insecure data
     def getValFromCurrInsecData(self, tagName):
     
