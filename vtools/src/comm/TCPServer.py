@@ -5,7 +5,7 @@ Created on 01-Feb-2019
 '''
 import socketserver
 import  socket
-from src.comm.CommConfig import CommConfig
+from vtools.src.comm.CommConfig import CommConfig
 
 class TCPServer:
     '''

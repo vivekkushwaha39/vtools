@@ -3,7 +3,7 @@ Created on 02-Feb-2019
 
 @author: vivek_
 '''
-from src.comm.TCPClient import TCPClient
+from vtools.src.comm.TCPClient import TCPClient
 class POPCommunicator:
     '''
     classdocs

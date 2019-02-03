@@ -1,5 +1,5 @@
 import socket
-from src.comm.CommConfig import CommConfig
+from vtools.src.comm.CommConfig import CommConfig
 from time import sleep
 
 

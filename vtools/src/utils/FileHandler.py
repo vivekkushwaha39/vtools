@@ -29,12 +29,13 @@ class FileHandler:
         self.fileHandle = None
         
         
-    def open(self):
+    def open(self, filemode = 'w'):
         '''
         opens file handle only when it is needed
         @note: Don't forget to close file handle
         '''
-        self.fileHandle = open(self.fileName)
+        print('opening file ' + self.fileName)
+        self.fileHandle = open(self.fileName, filemode)
         
     def close(self):
         if self.fileHandle is not None:
@@ -53,9 +54,10 @@ class FileHandler:
         self.fileHandle.write(text)
         return True
     
-    def openWithEditor(self, editorCommandLine="C:\\Program Files (x86)\\Notepad++\\notepad++.exe"):
+    def openWithEditor(self, editorCommandLine="explorer.exe "):
         self.close()
-        os.system(editorCommandLine + " " + self.fileName)
+        print(editorCommandLine)
+        os.system(editorCommandLine + " \"" + self.fileName + "\"")
     
     def saveAs(self, destDir):
         self.close()

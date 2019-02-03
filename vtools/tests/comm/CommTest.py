@@ -1,4 +1,4 @@
-import src.comm.TCPClient as TCPClient
+import vtools.src.comm.TCPClient as TCPClient
 
 
 communicator = TCPClient.TCPClient();

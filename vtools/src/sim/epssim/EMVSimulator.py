@@ -4,9 +4,9 @@ Created on 01-Feb-2019
 @author: VivekK4
 '''
 
-from src.sim.epssim.IFSFRequest import IFSFRequest
-from src.sim.epssim.POPCommunicator import POPCommunicator
-import src.sim.providers.FileDataProvider as FDP
+from vtools.src.sim.epssim.IFSFRequest import IFSFRequest
+from vtools.src.sim.epssim.POPCommunicator import POPCommunicator
+import vtools.src.sim.providers.FileDataProvider as FDP
 class EMVSimulator:
     '''
     a class to automate EMV Process class can do following thing 
@@ -104,6 +104,6 @@ class EMVSimulator:
     def validateAllReqData(self):
         for data in self.validaton:
             if data == None :
-                return data.getname()
+                return 'Validation failed for '+data.getname()
         
         return True
