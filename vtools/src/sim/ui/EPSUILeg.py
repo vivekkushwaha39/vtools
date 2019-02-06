@@ -3,51 +3,83 @@ Created on 03-Feb-2019
 
 @author: vivek_
 '''
-from Tkinter import Tk, Text
-from ttk import *
-from Tkconstants import *
+import Tkinter as tk
+from ttk import *  # @UnusedWildImport
+from Tkconstants import *  # @UnusedWildImport
 from vtools.src.sim.epssim import CommandParserLeg
 
 
-def runUI():
-    commandParser = CommandParserLeg.CmdParserLeg()
+class EPSUILeg:
     
-    root = Tk()
+    def runUI(self):
+        commandParser = CommandParserLeg.CmdParserLeg()
+        
+        root = tk.Tk()
+        root.title("EPS Simpulator")
+        root.rowconfigure(0, weight=1)
+        root.columnconfigure(0, weight=1)
+        # main frame which will hold all controls
+        mainFrame = tk.Frame(root)
+        mainFrame.grid(column=0, row=0, sticky=E+W+N+S)
+        mainFrame.rowconfigure(0, weight=1)
+        mainFrame.columnconfigure(0, weight=1)
+        
+        # frame for commands
+        frmCommands = tk.Frame(mainFrame)
+        frmCommands.grid(column=0, row=0, sticky=(E, W))
+        
+        # frame for logs
+        frmLog = tk.Frame(mainFrame, bg="red")
+        frmLog.grid(column=0, row=1, sticky=(E, W, N, S))
     
-    frmCommands = Frame(root)
-    frmCommands.pack(fill=BOTH, side=LEFT)
+        self.txtLog  = tk.Text(frmLog)
+        self.txtLog.grid(row=0, column=0, sticky=(W, N, S))
+        
+        lblConnStatus = Label(frmLog,text='Ready')
+        lblConnStatus.grid(row=0, column=1)
+        
+        btnCommands = []
+        
+        '''
+            Commands which are present in file
+        '''
+        self.commands = commandParser.getCommands()
+        
+        count = 0
+        maxCol = 5
+        for cmd in self.commands :
+            btn = Button(frmCommands, text=cmd, width=30,
+                          command=lambda name=cmd+'': self.btnSendCommand_Click(name))
+            row = count / maxCol
+            col = count % maxCol
+            print('Row is {0} col {1}'.format(row, col))
+            btn.grid(row=row, column=col)
+            btnCommands.append(btn)
+            count = count +1
+        
+        # Set resize properties here
+        EPSUILeg.configColumns(frmCommands, 1)
+        EPSUILeg.configRows(frmCommands, 1)
+        
+        EPSUILeg.configColumns(frmLog, 1)
+        EPSUILeg.configRows(frmLog, 1)
+        
+        # program main loop
+        root.mainloop()
     
-#     rows = 0
-#     while rows < 50:
-#         frmCommands.rowconfigure(rows, weight=1)
-#         frmCommands.columnconfigure(rows,weight=1)
-#         rows += 1
-     
-    frmLog = Frame(root)
-    frmLog.pack(fill=BOTH, side=RIGHT)
-    
-    txtLog = Text(frmLog,height=20)
-    txtLog.grid(row=0, column=0)
-    
-    lblConnStatus = Label(frmLog,text='Ready')
-    lblConnStatus.grid(row=1, column=0)
-    
-    btnCommands = []
-    commands = commandParser.getCommands()
-    count = 0
-    maxCol = 3
-    for cmd in commands :
-        btn = Button(frmCommands, text=cmd, width=30,
-                      command=lambda name=cmd+'': btnSendCommand_Click(name))
-        row = count / maxCol
-        col = count % maxCol
-        print('Row is {0} col {1}'.format(row, col))
-        btn.grid(row=row, column=col)
-        btnCommands.append(btn)
-        count = count +1
-    
-    root.mainloop()
-
-def btnSendCommand_Click(evt):
-    
-    print evt
+    @staticmethod
+    def configRows(ctrl, weight):
+        row, col = ctrl.grid_size()
+        for i in range(row):
+            ctrl.rowconfigure(i, weight=weight)
+    @staticmethod
+    def configColumns(ctrl, weight):
+        row, col = ctrl.grid_size()
+        for i in range(col):
+            ctrl.columnconfigure(i, weight=weight)
+        
+    def btnSendCommand_Click(self, commandName):
+        requestCommand = self.commands[commandName]
+        cmdString = requestCommand.genXMLString()
+        self.txtLog.insert(END, cmdString)
+        
