@@ -7,9 +7,14 @@ import Tkinter as tk
 from ttk import *  # @UnusedWildImport
 from Tkconstants import *  # @UnusedWildImport
 from vtools.src.sim.epssim import CommandParserLeg
+from vtools.src.sim.epssim.POPCommunicator import POPCommunicator
 
 
 class EPSUILeg:
+    
+    def __init__(self):
+        self.pop = None
+        self.pop = POPCommunicator('192.168.31.127', 4000)
     
     def runUI(self):
         commandParser = CommandParserLeg.CmdParserLeg()
@@ -52,7 +57,7 @@ class EPSUILeg:
                           command=lambda name=cmd+'': self.btnSendCommand_Click(name))
             row = count / maxCol
             col = count % maxCol
-            print('Row is {0} col {1}'.format(row, col))
+#             print('Row is {0} col {1}'.format(row, col))
             btn.grid(row=row, column=col)
             btnCommands.append(btn)
             count = count +1
@@ -82,4 +87,5 @@ class EPSUILeg:
         requestCommand = self.commands[commandName]
         cmdString = requestCommand.genXMLString()
         self.txtLog.insert(END, cmdString)
+        self.pop.sendRequest(cmdString)
         

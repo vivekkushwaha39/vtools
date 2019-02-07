@@ -90,7 +90,7 @@ class IFSFRequest:
     def selectInsecureDataByIndex(self, index):
         try:
             inputTag = self.findATagByName(self.requestXML, 'Input')
-            print inputTag
+            print(inputTag)
             if inputTag is None:
                 raise Exception('No input found')
             

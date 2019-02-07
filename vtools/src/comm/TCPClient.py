@@ -1,6 +1,7 @@
 import socket
 from vtools.src.comm.CommConfig import CommConfig
 from time import sleep
+from _socket import AF_INET, SOCK_STREAM
 
 
 class TCPClient:
@@ -18,7 +19,7 @@ class TCPClient:
         
         ret = True
         try :
-            self.client = socket.socket(socket.AddressFamily.AF_INET, socket.SOCK_STREAM)
+            self.client = socket.socket(AF_INET, SOCK_STREAM)
         except socket.error as err:
             print(err)
             ret = False
