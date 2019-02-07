@@ -1,6 +1,5 @@
 import socket
 from vtools.src.comm.CommConfig import CommConfig
-from time import sleep
 from _socket import AF_INET, SOCK_STREAM
 
 
@@ -36,7 +35,7 @@ class TCPClient:
         
         intSize = len(byteData)
         
-        bytesize = intSize.to_bytes(4, byteorder='big')
+        bytesize = TCPClient.intToByteArray(intSize)
         
         bytePacket = bytearray(0)
         
@@ -48,7 +47,7 @@ class TCPClient:
         sent = 0
         sent = self.client.send(bytePacket)
         
-        print(sent, len(byteData))
+        print(sent, len(byteData), bytesize)
         return sent
     
     def recvMsg(self):
@@ -64,3 +63,14 @@ class TCPClient:
     
     def disconnect(self):
         self.client.close()
+    
+    @staticmethod
+    def intToByteArray(intData):
+        strBytes = '%08X'%intData
+        bytearr = bytearray(0)
+        
+        for i in xrange(0, len(strBytes), 2 ):
+            currByte = chr(int(strBytes[i:i+2], 16))
+            bytearr.extend(currByte)
+        
+        return bytearr
