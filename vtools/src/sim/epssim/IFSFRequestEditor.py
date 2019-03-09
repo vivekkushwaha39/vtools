@@ -31,7 +31,7 @@ class IFSFRequestEditor:
         for insecData in insecDatas:
             iccDatas = self.request.findAllTagByName(insecData, 'ICCData')
             
-            print len(iccDatas)
+            print (len(iccDatas))
             for params in iccDatas:
                 _, val, _ = self.request.getKeyVal(params)
                 
@@ -46,7 +46,7 @@ class IFSFRequestEditor:
         for insecData in insecDatas:
             iccDatas = self.request.findAllTagByName(insecData, 'ICCData')
             
-            print len(iccDatas)
+            print (len(iccDatas))
             for params in iccDatas:
                 _, val, _ = self.request.getKeyVal(params)
                 
@@ -74,7 +74,7 @@ class IFSFRequestEditor:
     def printXML(self):
         xmlString = self.request.genXMLString()
         xmlString = IFSFRequest.prettyPrint(xmlString)
-        print xmlString
+        print ( xmlString )
         
     def convertHexStrToAscii(self, stringData):
         return stringData.decode('hex')

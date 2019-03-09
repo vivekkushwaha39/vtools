@@ -27,7 +27,7 @@ class TCPServer:
         print("listening for devices")
         self.serverSock.listen(1)
         print("accepting")
-        self.clientSock =  self.serverSock.accept()
+        self.clientSock, _ =  self.serverSock.accept()
     
     def sendMsg(self):
         if ( self.clientSock is None ):
@@ -38,11 +38,9 @@ class TCPServer:
             return False
         
         chunks = []
-        chunk = self.client.recv(CommConfig.BUFF_SIZE)
+        chunk = self.clientSock.recv(CommConfig.BUFF_SIZE)
         while ( chunk is not '' ):
             chunks.append(chunk)
-            chunk = self.client.recv(CommConfig.BUFF_SIZE)
+            chunk = self.clientSock.recv(CommConfig.BUFF_SIZE)
         
         return ''.join(chunks)
-            
-        

@@ -26,7 +26,7 @@ class POPCommunicator:
         tcpcomm.connect(self.ip, self.port)
         tcpcomm.sendMsg(command)
         response = tcpcomm.recvMsg()
-        print response
+        print ( response )
         return response
     
     def getPopIp(self):

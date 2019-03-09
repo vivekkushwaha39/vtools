@@ -99,8 +99,8 @@ class IFSFRequest:
                 raise Exception('Insec data index not found ', index)
             self.currInSecureData = insecDatas[index]
              
-        except Exception, e :
-            print('error' , e)
+        except Exception :
+            print('error', Exception)
             return None
             
         return True
