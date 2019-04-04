@@ -32,7 +32,7 @@ class TCPClient:
     def sendMsg(self, msg):
         
         byteData = msg.encode()
-        
+        print(byteData)
         intSize = len(byteData)
         
         bytesize = TCPClient.intToByteArray(intSize)
@@ -66,10 +66,12 @@ class TCPClient:
     
     @staticmethod
     def intToByteArray(intData):
+        return intData.to_bytes(4, 'big')
+        
         strBytes = '%08X'%intData
         bytearr = bytearray(0)
         
-        for i in xrange(0, len(strBytes), 2 ):
+        for i in range(0, len(strBytes), 2 ):
             currByte = chr(int(strBytes[i:i+2], 16))
             bytearr.extend(currByte)
         

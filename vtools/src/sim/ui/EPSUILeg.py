@@ -21,7 +21,7 @@ class EPSUILeg:
         commandParser = CommandParserLeg.CmdParserLeg()
         
         root = tk.Tk()
-        root.title("EPS Simpulator")
+        root.title("EPS Simulator")
         root.rowconfigure(0, weight=1)
         root.columnconfigure(0, weight=1)
         # main frame which will hold all controls
@@ -89,4 +89,5 @@ class EPSUILeg:
         cmdString = requestCommand.genXMLString()
         self.txtLog.insert(END, cmdString)
         self.pop.sendRequest(cmdString)
+		
         
