@@ -3,12 +3,18 @@ Created on 02-Feb-2019
 
 @author: vivek_
 '''
+
+import sys
+import os
+
 from vtools.src.utils.InputUtils import readmultiline
 from vtools.src.sim.epssim.IFSFRequest import IFSFRequest
 from vtools.src.sim.epssim.IFSFRequestEditor import IFSFRequestEditor
 import vtools.src.sim.epssim.EMVSimulator as ES
 import os
 from vtools.src.sim.ui.EPSUILeg import EPSUILeg
+
+
 def inputTest():
     print('Enter XML now')
     xmlData = readmultiline()
@@ -47,8 +53,6 @@ def legTets():
     epsLegui = EPSUILeg()
     epsLegui.runUI()
 
-os.system('pwd')
-os.chdir('../../')
 os.system('pwd')
 legTets()
     

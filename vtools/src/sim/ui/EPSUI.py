@@ -3,9 +3,8 @@ Created on 03-Feb-2019
 
 @author: vivek_
 '''
-from Tkinter import Tk, Text
-from ttk import *
-from Tkconstants import *
+from tkinter import *
+from tkinter.ttk import *
 
 def runUI():
     root = Tk()

@@ -13,7 +13,7 @@ class CmdParserLeg:
     '''
 
 
-    def __init__(self, fileName="res/cmdData.xml"):
+    def __init__(self, fileName="vtools/res/cmdData.xml"):
         self.xmlDataRoot = ET.ElementTree.parse(fileName)
         cmdDatas = self.xmlDataRoot.findall('cmdData')
         # list of parsed request with key= "Commandname" value="IFSFRequestObject"

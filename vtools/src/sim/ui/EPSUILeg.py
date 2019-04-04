@@ -3,9 +3,10 @@ Created on 03-Feb-2019
 
 @author: vivek_
 '''
-import Tkinter as tk
-from ttk import *  # @UnusedWildImport
-from Tkconstants import *  # @UnusedWildImport
+import tkinter as tk
+from tkinter.ttk import *  # @UnusedWildImport
+# from Tkconstants import *  # @UnusedWildImport
+from tkinter.constants import *
 from vtools.src.sim.epssim import CommandParserLeg
 from vtools.src.sim.epssim.POPCommunicator import POPCommunicator
 
@@ -58,7 +59,7 @@ class EPSUILeg:
             row = count / maxCol
             col = count % maxCol
 #             print('Row is {0} col {1}'.format(row, col))
-            btn.grid(row=row, column=col)
+            btn.grid(row=int(row), column=col)
             btnCommands.append(btn)
             count = count +1
         
